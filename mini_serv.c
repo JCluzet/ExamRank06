@@ -1,4 +1,11 @@
-#include <libc.h>
+#include <unistd.h>
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <errno.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
 
 int maxFd = 0, numberofClients = 0, id_by_sock[65536], currentmessage[65536];
 fd_set ready_to_read, ready_to_write, active_sockets;
