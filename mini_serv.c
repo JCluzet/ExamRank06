@@ -7,17 +7,21 @@
 int max_fd = 0, g_id = 0, id[65536], currmsg[65536], sock_fd = -1;
 fd_set fdread, fdwrite, currentsock;
 char buf[4096 * 42], msg[4096 * 42 + 42], str[4096 * 42];
+
 void sendAll(int except) {
     for(int fd = 0; fd <= max_fd; fd++)
         if(FD_ISSET(fd, &fdwrite) && except != fd)
             send(fd, msg, strlen(msg), 0);
 }
+
 void fatal() {
     write(2, "Fatal error\n", strlen("Fatal error\n"));
     close(sock_fd);
     exit(1);
 }
-int main(int argc, char **argv) {
+
+int main(int argc, char **argv) 
+{
     if(argc != 2) {
         write(2, "Wrong number of arguments\n", strlen("Wrong number of arguments\n"));
         exit(1);
@@ -37,6 +41,7 @@ int main(int argc, char **argv) {
     FD_ZERO(&currentsock);
     FD_SET(sock_fd, &currentsock);
     max_fd = sock_fd;
+
     while(1) {
         fdwrite = fdread = currentsock;
         if(select(max_fd + 1, &fdread, &fdwrite, 0, 0) <= 0)
